@@ -1,62 +1,66 @@
 public class Radio {
-    private int numberStation;
-    private int volume;
+    private int currentStation;
+    private int currentVolume;
+    private int maxiStation = 9;
+    int miniStation = 0;
+    int maxiVolume = 100;
+    int miniVolume = 0;
 
-    public int getRadio() {
-
-        return numberStation;
+    public Radio() {
     }
 
-    public void setRadio(int radio) {
-        if (radio < 0) {
-            return;
-        }
-        if (radio > 9) {
-            return;
-        }
-        this.numberStation = radio;
+    public Radio(int maxiStation) {
+        this.maxiStation = maxiStation;
+
     }
 
-    public void nextRadio() {
-        if (numberStation < 9) {
-            numberStation++;
+    public int getMaxiStation() {
+        return maxiStation;
+    }
+
+    public int getCurrentStation() {
+        return this.currentStation;
+    }
+
+    public void setCurrentStation(int newStation) {
+        if (newStation > maxiStation || newStation < miniStation) {
+            return;
+        }
+        this.currentStation = newStation;
+    }
+
+    public int getCurrentVolume() {
+        return this.currentVolume;
+    }
+
+    public void setCurrentVolume(int newVolume) {
+        if (newVolume > maxiVolume || newVolume < miniVolume) {
+            return;
+        }
+        this.currentVolume = newVolume;
+    }
+
+    public void pressNextStation() {
+        if (currentStation == maxiStation) {
+            setCurrentStation(miniStation);
         } else {
-            numberStation = 0;
+            setCurrentStation(currentStation + 1);
         }
     }
 
-    public void prevRadio() {
-        if (numberStation > 0) {
-            numberStation--;
+    public void pressPrevStation() {
+        if (currentStation == miniStation) {
+            setCurrentStation(maxiStation);
         } else {
-            numberStation = 9;
+            setCurrentStation(currentStation - 1);
         }
     }
 
-    public int getVolume() {
-        return volume;
+    public void pressPlusVolume() {
+        setCurrentVolume(currentVolume + 1);
     }
 
-    public void setVolume(int volume) {
-        if (volume < 0) {
-            return;
-        }
-        if (volume > 10) {
-            volume = 10;
-        }
-        this.volume = volume;
+    public void pressMinusVolume() {
+        setCurrentVolume(currentVolume - 1);
     }
-
-    public void volumeUp() {
-        if (volume < 10) {
-            volume++;
-        }
-    }
-
-    public void volumeDown() {
-        if (volume > 0) {
-            volume--;
-        }
-    }
-
 }

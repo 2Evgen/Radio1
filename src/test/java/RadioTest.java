@@ -1,158 +1,101 @@
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class RadiomanTest {
-    @Test
-    void test1RadioNext() {
-        Radio radio = new Radio();
-
-        radio.setRadio(0);
-        radio.nextRadio();
-        int actual = radio.getRadio();
-        int expected = 1;
-
-        assertEquals(actual, expected);
-    }
+class RadioTest {
 
     @Test
-    void test2RadioNext() {
-        Radio radio = new Radio();
+    void setMaxiStationTest(){
+        int expected=28;
+        Radio radio=new Radio(expected);
 
-        radio.setRadio(9);
-        radio.nextRadio();
-        int actual = radio.getRadio();
-        int expected = 0;
-
-        assertEquals(actual, expected);
+        assertEquals(expected, radio.getMaxiStation());
     }
 
-    @Test
-    void test3RadioNext() {
-        Radio radio = new Radio();
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                    "'From first station'; 5; 0; 0",
+                    "'Last station'; 14; 14; 14",
+                    "'More maximum station'; 5; 7; 0",
+                    "'Less minimum station'; 5; -1; 0"
+            }
+            , delimiter = ';'
+    )
+    void setStationNumberTest(String name, int max, int start, int expected) {
+        Radio radio=new Radio(max);
+        radio.setCurrentStation(start);
 
-        radio.setRadio(-5);
-        radio.nextRadio();
-        int actual = radio.getRadio();
-        int expected = 1;
-
-        assertEquals(actual, expected);
+        assertEquals(expected, radio.getCurrentStation());
     }
 
-    @Test
-    void test4RadioNext() {
-        Radio radio = new Radio();
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                    "'From first station'; 5; 0; 1",
+                    "'Go last station'; 5; 4; 5",
+                    "'More maximum station'; 5; 5; 0"
+            }
+            , delimiter = ';'
+    )
+    void pressNextStationTest(String name, int max, int start, int expected) {
+        Radio radio=new Radio(max);
+        radio.setCurrentStation(start);
 
-        radio.setRadio(10);
-        radio.nextRadio();
-        int actual = radio.getRadio();
-        int expected = 1;
-
-        assertEquals(actual, expected);
+        radio.pressNextStation();
+        assertEquals(expected, radio.getCurrentStation());
     }
 
-    @Test
-    void test1RadioPrev() {
-        Radio radio = new Radio();
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                    "'From last station'; 5; 5; 4",
+                    "'First station'; 5; 1; 0",
+                    "'Less minimum station'; 5; 0; 5"
+            }
+            , delimiter = ';'
+    )
+    void pressPrevStationTest(String name, int max, int start, int expected) {
+        Radio radio=new Radio(max);
+        radio.setCurrentStation(start);
 
-        radio.setRadio(5);
-        radio.prevRadio();
-
-        int actual = radio.getRadio();
-        int expected = 4;
-
-        assertEquals(actual, expected);
+        radio.pressPrevStation();
+        assertEquals(expected, radio.getCurrentStation());
     }
 
-    @Test
-    void test2RadioPrev() {
-        Radio radio = new Radio();
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                    "'Zero volume'; 0; 1",
+                    "'Max volume'; 99; 100",
+                    "'More maximum volume'; 100; 100"
+            }
+            , delimiter = ';'
+    )
+    void pressPlusVolumeTest(String name, int start, int expected) {
+        Radio radio=new Radio();
+        radio.setCurrentVolume(start);
 
-        radio.setRadio(11);
-        radio.prevRadio();
-
-        int actual = radio.getRadio();
-        int expected = 9;
-
-        assertEquals(actual, expected);
+        radio.pressPlusVolume();
+        assertEquals(expected, radio.getCurrentVolume());
     }
 
-    @Test
-    void test3RadioPrev() {
-        Radio radio = new Radio();
+    @ParameterizedTest
+    @CsvSource(
+            value = {
+                    "'Max volume'; 100; 99",
+                    "'Min volume'; 1; 0",
+                    "'Less minimum volume'; 0; 0"
+            }
+            , delimiter = ';'
+    )
+    void pressMinusVolumeTest(String name, int start, int expected) {
+        Radio radio=new Radio();
+        radio.setCurrentVolume(start);
 
-        radio.setRadio(0);
-        radio.prevRadio();
-
-        int actual = radio.getRadio();
-        int expected = 9;
-
-        assertEquals(actual, expected);
+        radio.pressMinusVolume();
+        assertEquals(expected, radio.getCurrentVolume());
     }
-
-    @Test
-    void test4RadioPrev() {
-        Radio radio = new Radio();
-
-        radio.setRadio(10);
-        radio.prevRadio();
-
-        int actual = radio.getRadio();
-        int expected = 9;
-
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    void Test1VolumeUp() {
-        Radio radio = new Radio();
-
-        radio.setVolume(5);
-        radio.volumeUp();
-
-        int actual = radio.getVolume();
-        int expected = 6;
-
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    void Test2VolumeUp() {
-        Radio radio = new Radio();
-
-        radio.setVolume(12);
-        radio.volumeUp();
-
-        int actual = radio.getVolume();
-        int expected = 10;
-
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    void Test1VolumeDown() {
-        Radio radio = new Radio();
-
-        radio.setVolume(3);
-        radio.volumeDown();
-
-        int actual = radio.getVolume();
-        int expected = 2;
-
-        assertEquals(actual, expected);
-    }
-
-    @Test
-    void Test2VolumeDown() {
-        Radio radio = new Radio();
-
-        radio.setVolume(-5);
-        radio.volumeDown();
-
-        int actual = radio.getVolume();
-        int expected = 0;
-
-        assertEquals(actual, expected);
-    }
-
 }
