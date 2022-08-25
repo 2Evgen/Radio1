@@ -7,9 +7,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class RadioTest {
 
     @Test
-    void setMaxiStationTest(){
-        int expected=28;
-        Radio radio=new Radio(expected);
+    void setMaxiStationTest() {
+        int expected = 28;
+        Radio radio = new Radio(expected);
 
         assertEquals(expected, radio.getMaxiStation());
     }
@@ -25,7 +25,7 @@ class RadioTest {
             , delimiter = ';'
     )
     void setStationNumberTest(String name, int max, int start, int expected) {
-        Radio radio=new Radio(max);
+        Radio radio = new Radio(max);
         radio.setCurrentStation(start);
 
         assertEquals(expected, radio.getCurrentStation());
@@ -41,7 +41,7 @@ class RadioTest {
             , delimiter = ';'
     )
     void pressNextStationTest(String name, int max, int start, int expected) {
-        Radio radio=new Radio(max);
+        Radio radio = new Radio(max);
         radio.setCurrentStation(start);
 
         radio.pressNextStation();
@@ -58,7 +58,7 @@ class RadioTest {
             , delimiter = ';'
     )
     void pressPrevStationTest(String name, int max, int start, int expected) {
-        Radio radio=new Radio(max);
+        Radio radio = new Radio(max);
         radio.setCurrentStation(start);
 
         radio.pressPrevStation();
@@ -75,7 +75,7 @@ class RadioTest {
             , delimiter = ';'
     )
     void pressPlusVolumeTest(String name, int start, int expected) {
-        Radio radio=new Radio();
+        Radio radio = new Radio();
         radio.setCurrentVolume(start);
 
         radio.pressPlusVolume();
@@ -92,10 +92,17 @@ class RadioTest {
             , delimiter = ';'
     )
     void pressMinusVolumeTest(String name, int start, int expected) {
-        Radio radio=new Radio();
+        Radio radio = new Radio();
         radio.setCurrentVolume(start);
 
         radio.pressMinusVolume();
         assertEquals(expected, radio.getCurrentVolume());
+    }
+
+    @Test
+    public void shouldCorrectMaxStationForNumber() {
+        Radio station = new Radio();
+
+        assertEquals(9, station.getNumberStations());
     }
 }
