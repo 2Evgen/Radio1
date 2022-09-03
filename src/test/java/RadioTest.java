@@ -1,6 +1,5 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -8,95 +7,10 @@ class RadioTest {
 
     @Test
     void setMaxiStationTest() {
-        int expected = 28;
+        int expected = 9;
         Radio radio = new Radio(expected);
 
         assertEquals(expected, radio.getMaxiStation());
-    }
-
-    @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'From first station'; 5; 0; 0",
-                    "'Last station'; 14; 14; 14",
-                    "'More maximum station'; 5; 7; 0",
-                    "'Less minimum station'; 5; -1; 0"
-            }
-            , delimiter = ';'
-    )
-    void setStationNumberTest(String name, int max, int start, int expected) {
-        Radio radio = new Radio(max);
-        radio.setCurrentStation(start);
-
-        assertEquals(expected, radio.getCurrentStation());
-    }
-
-    @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'From first station'; 5; 0; 1",
-                    "'Go last station'; 5; 4; 5",
-                    "'More maximum station'; 5; 5; 0"
-            }
-            , delimiter = ';'
-    )
-    void pressNextStationTest(String name, int max, int start, int expected) {
-        Radio radio = new Radio(max);
-        radio.setCurrentStation(start);
-
-        radio.pressNextStation();
-        assertEquals(expected, radio.getCurrentStation());
-    }
-
-    @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'From last station'; 5; 5; 4",
-                    "'First station'; 5; 1; 0",
-                    "'Less minimum station'; 5; 0; 5"
-            }
-            , delimiter = ';'
-    )
-    void pressPrevStationTest(String name, int max, int start, int expected) {
-        Radio radio = new Radio(max);
-        radio.setCurrentStation(start);
-
-        radio.pressPrevStation();
-        assertEquals(expected, radio.getCurrentStation());
-    }
-
-    @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'Zero volume'; 0; 1",
-                    "'Max volume'; 99; 100",
-                    "'More maximum volume'; 100; 100"
-            }
-            , delimiter = ';'
-    )
-    void pressPlusVolumeTest(String name, int start, int expected) {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(start);
-
-        radio.pressPlusVolume();
-        assertEquals(expected, radio.getCurrentVolume());
-    }
-
-    @ParameterizedTest
-    @CsvSource(
-            value = {
-                    "'Max volume'; 100; 99",
-                    "'Min volume'; 1; 0",
-                    "'Less minimum volume'; 0; 0"
-            }
-            , delimiter = ';'
-    )
-    void pressMinusVolumeTest(String name, int start, int expected) {
-        Radio radio = new Radio();
-        radio.setCurrentVolume(start);
-
-        radio.pressMinusVolume();
-        assertEquals(expected, radio.getCurrentVolume());
     }
 
     @Test
@@ -105,4 +19,59 @@ class RadioTest {
 
         assertEquals(9, station.getNumberStations());
     }
+
+    @Test
+    public void shouldNotSetVolumeAboveMax() {
+        Radio volume = new Radio();
+        volume.setCurrentVolume(11);
+        volume.setCurrentVolume(101);
+
+        int expected = 11;
+        int actual = volume.getCurrentVolume();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldCorrectMaxStation() {
+        Radio station = new Radio(10);
+
+        Assertions.assertEquals(9, station.getMaxiStation());
+    }
+
+    @Test
+    void shouldSetVolumeNegative() {
+        Radio radio = new Radio(-1);
+        assertEquals(0, radio.getCurrentVolume());
+    }
+
+    @Test
+    public void StationOverMax() {
+        Radio radio = new Radio(11);
+        radio.setCurrentStation(11);
+        radio.setCurrentStation(10);
+        radio.pressNextStation();
+        int expected = 1;
+        int actual = radio.getCurrentStation();
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void StationOverMin() {
+        Radio radio = new Radio(11);
+        radio.setCurrentStation(0);
+        radio.pressPrevStation();
+        int expected = 9;
+        int actual = radio.getCurrentStation();
+        Assertions.assertEquals(expected, actual);
+    }
+    @Test
+    public void shouldCorrectMinStation() {
+        Radio radio = new Radio(0);
+        int expected = 1;
+        int actual = radio.getCurrentStation();
+        Assertions.assertEquals(0, radio.getCurrentStation());
+    }
+
 }
+
+
