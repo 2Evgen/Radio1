@@ -1,7 +1,7 @@
 public class Radio {
     private int currentStation;
     private int currentVolume;
-    private final int maxiStation = 9;
+    protected int maxiStation;
     private final int miniStation = 0;
 
     private int maxiVolume = 100;
@@ -9,10 +9,11 @@ public class Radio {
     private int numberOfStations = 9;
 
     public Radio() {
+        maxiStation = 9;
     }
 
     public Radio(int numberOfStations) {
-        this.numberOfStations = numberOfStations;
+        maxiStation = numberOfStations - 1;
 
     }
 
@@ -30,6 +31,7 @@ public class Radio {
         }
         this.currentStation = newStation;
     }
+
     public int getCurrentVolume() {
         return this.currentVolume;
     }
@@ -45,6 +47,7 @@ public class Radio {
 
     public void pressNextStation() {
         if (currentStation == maxiStation) {
+            setCurrentStation(miniStation);
 
         } else {
             setCurrentStation(currentStation + 1);
@@ -54,6 +57,8 @@ public class Radio {
     public void pressPrevStation() {
         if (currentStation == miniStation) {
             setCurrentStation(maxiStation);
+        } else {
+            setCurrentStation(currentStation - 1);
         }
     }
 

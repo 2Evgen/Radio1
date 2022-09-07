@@ -7,9 +7,9 @@ class RadioTest {
 
     @Test
     void setMaxiStationTest() {
-        int expected = 9;
-        Radio radio = new Radio(expected);
 
+        Radio radio = new Radio();
+        int expected = 9;
         assertEquals(expected, radio.getMaxiStation());
     }
 
@@ -50,7 +50,7 @@ class RadioTest {
         radio.setCurrentStation(11);
         radio.setCurrentStation(10);
         radio.pressNextStation();
-        int expected = 1;
+        int expected = 0;
         int actual = radio.getCurrentStation();
         Assertions.assertEquals(expected, actual);
     }
@@ -60,10 +60,11 @@ class RadioTest {
         Radio radio = new Radio(11);
         radio.setCurrentStation(0);
         radio.pressPrevStation();
-        int expected = 9;
+        int expected = 10;
         int actual = radio.getCurrentStation();
         Assertions.assertEquals(expected, actual);
     }
+
     @Test
     public void shouldCorrectMinStation() {
         Radio radio = new Radio(0);
@@ -72,6 +73,37 @@ class RadioTest {
         Assertions.assertEquals(0, radio.getCurrentStation());
     }
 
+    @Test
+    public void test() {
+        Radio radio = new Radio(20);
+        radio.setCurrentStation(15);
+
+        assertEquals(15, radio.getCurrentStation());
+    }
+
+    @Test
+    void test3RadioNext() {
+        Radio radio = new Radio();
+
+        radio.setCurrentStation(-5);
+        radio.pressNextStation();
+        int actual = radio.getNumberStations();
+        int expected = 9;
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void test4() {
+        Radio radio = new Radio();
+
+        radio.setCurrentStation(6);
+        radio.pressPrevStation();
+        int actual = radio.getNumberStations();
+        int expected = 9;
+
+        assertEquals(expected, actual);
+    }
 }
 
 
