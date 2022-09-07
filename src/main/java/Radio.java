@@ -1,62 +1,68 @@
 public class Radio {
-    private int numberStation;
-    private int volume;
+    private int currentStation;
+    private int currentVolume;
+    protected int maxiStation;
+    private final int miniStation = 0;
 
-    public int getRadio() {
+    private int maxiVolume = 100;
+    private int miniVolume = 0;
+    private int numberOfStations = 9;
 
-        return numberStation;
+    public Radio() {
+        maxiStation = 9;
     }
 
-    public void setRadio(int radio) {
-        if (radio < 0) {
-            return;
-        }
-        if (radio > 9) {
-            return;
-        }
-        this.numberStation = radio;
+    public Radio(int numberOfStations) {
+        maxiStation = numberOfStations - 1;
+
     }
 
-    public void nextRadio() {
-        if (numberStation < 9) {
-            numberStation++;
+    public int getMaxiStation() {
+        return maxiStation;
+    }
+
+    public int getCurrentStation() {
+        return this.currentStation;
+    }
+
+    public void setCurrentStation(int newStation) {
+        if (newStation > maxiStation || newStation < miniStation) {
+            return;
+        }
+        this.currentStation = newStation;
+    }
+
+    public int getCurrentVolume() {
+        return this.currentVolume;
+    }
+
+    public void setCurrentVolume(int newVolume) {
+        int maxiVolume = 100;
+        int miniVolume = 0;
+        if (newVolume > maxiVolume || newVolume < miniVolume) {
+            return;
+        }
+        this.currentVolume = newVolume;
+    }
+
+    public void pressNextStation() {
+        if (currentStation == maxiStation) {
+            setCurrentStation(miniStation);
+
         } else {
-            numberStation = 0;
+            setCurrentStation(currentStation + 1);
         }
     }
 
-    public void prevRadio() {
-        if (numberStation > 0) {
-            numberStation--;
+    public void pressPrevStation() {
+        if (currentStation == miniStation) {
+            setCurrentStation(maxiStation);
         } else {
-            numberStation = 9;
+            setCurrentStation(currentStation - 1);
         }
     }
 
-    public int getVolume() {
-        return volume;
+    public int getNumberStations() {
+        return numberOfStations;
     }
-
-    public void setVolume(int volume) {
-        if (volume < 0) {
-            return;
-        }
-        if (volume > 10) {
-            volume = 10;
-        }
-        this.volume = volume;
-    }
-
-    public void volumeUp() {
-        if (volume < 10) {
-            volume++;
-        }
-    }
-
-    public void volumeDown() {
-        if (volume > 0) {
-            volume--;
-        }
-    }
-
 }
